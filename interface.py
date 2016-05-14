@@ -114,7 +114,8 @@ def add_all_files(list, loc):
                songsnames.append(l)
                songs.append(loc+"\\"+l)
 
-locations = ["C:\\Users\\amatcha\\Downloads\\songs", "C:\\Users\\amatcha\\Downloads\\mv", "C:\\Users\\amatcha\\Downloads\\Video", "C:\\Users\\amatcha\\Downloads\\oldcmp", "C:\\Users\\amatcha\\Downloads\\video songs"]
+locations = ["location1", "location2", "location3", "location4", "location5"]
+
 
 vlcpath = 'C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe'
 

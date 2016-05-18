@@ -119,7 +119,6 @@ for loc in locations:
     for root, subFolders, files in os.walk(loc):
         add_all_files(files, subFolders, root)
 
-print(len(songsnames)+len(videosnames))
 run = True	
 process = None
 while run:

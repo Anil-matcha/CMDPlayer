@@ -63,12 +63,15 @@ def compare_strings(filename, searchname, song):
     count = 0
     for s in searcharray:
         min = 10000
+        selectedfile = None
         for f in filearray:
             if(strdiff(s,f)<=int(2*len(s)/4)):
                 if(min > strdiff(s,f)):
                     min = strdiff(s,f)
+                    selectedfile = f
         if(min!=10000):
             count += 2*(3-min)
+            filearray.remove(selectedfile)
     return count
 
 
@@ -96,37 +99,29 @@ videos = []
 songsnames = []
 videosnames = []
 
-def add_all_files(list, loc):
-    for l in list:
-        if(os.path.isdir(loc+"\\"+l)):
-            process = subprocess.Popen(['ls', loc+"\\"+l], stdout=subprocess.PIPE)
-            out, err = process.communicate()
-            list = out.decode("utf-8").split("\n")
-            list.pop()
-            list = out.decode("utf-8").split("\n")
-            list.pop()
-            add_all_files(list, loc+"\\"+l)
-        elif(os.path.isfile(loc+"\\"+l)):
-            if any(word in l for word in videoformats):
-               videosnames.append(l)
-               videos.append(loc+"\\"+l)			
-            elif any(word in l for word in audioformats):			
-               songsnames.append(l)
-               songs.append(loc+"\\"+l)
-
-locations = ["location1", "location2", "location3", "location4", "location5"]
-
+def add_all_files(filelist, folderlist, loc):
+    for file in filelist:
+        if any(word in file for word in videoformats):
+           videosnames.append(file)
+           videos.append(loc+"\\"+file)			
+        elif any(word in file for word in audioformats):			
+           songsnames.append(file)
+           songs.append(loc+"\\"+file)
+    for folder in folderlist:
+        for root, subFolders, files in os.walk(loc+"\\"+folder):
+           add_all_files(files, subFolders, root)
+		   
+locations = ["C:\\Users\\amatcha\\Downloads\\songs", "C:\\Users\\amatcha\\Downloads\\mv", "C:\\Users\\amatcha\\Downloads\\Video", "C:\\Users\\amatcha\\Downloads\\oldcmp", "C:\\Users\\amatcha\\Downloads\\video songs"]
 
 vlcpath = 'C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe'
 
 for loc in locations:
-    process = subprocess.Popen(['ls', loc], stdout=subprocess.PIPE)
-    out, err = process.communicate()
-    list = out.decode("utf-8").split("\n")
-    list.pop()
-    add_all_files(list, loc)
-	
+    for root, subFolders, files in os.walk(loc):
+        add_all_files(files, subFolders, root)
+
+print(len(songsnames)+len(videosnames))
 run = True	
+process = None
 while run:
     print("Enter a command")
     s = input()
